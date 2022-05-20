@@ -1,5 +1,5 @@
 import crud, models, schemas
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from werkzeug.security import check_password_hash
 from jose import JWTError, jwt
 from pydantic import BaseModel
+import uvicorn
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -88,13 +89,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(get_db(), username=token_data.username)
+    user = crud.get_user_by_username(get_db(), username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
 
-def authenticate_user(db: Session, email: str, password: str):
-    user = crud.get_user_by_email(email, db)
+def authenticate_user(username: str, password: str, db: Session):
+    user = crud.get_user_by_username(db, username)
     if not user:
         return False
     if not check_password_hash(user.password, password):
@@ -124,9 +125,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 
 @app.post("/token", response_model=Token)
-#async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-async def login_for_access_token(username:str, password: str):
-    user = authenticate_user(get_db(), username, password)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+#async def login_for_access_token(username:str, password: str, db: Session = Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -138,3 +139,6 @@ async def login_for_access_token(username:str, password: str):
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
