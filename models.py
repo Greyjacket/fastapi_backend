@@ -1,6 +1,5 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Datetime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
 from database import Base
 
 
@@ -13,3 +12,9 @@ class User(Base):
     password = Column(String)
     is_active = Column(Boolean, default=True)
     full_name = Column(String)
+
+class Property(Base):
+    __tablename__ = "properties"
+
+    address = Column(String, unique=True, index=True)
+    mortgage = Column(Datetime)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
@@ -15,3 +16,8 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class Property(BaseModel):
+    address: str
+    mortgage_applicaton_date: datetime
