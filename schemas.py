@@ -19,5 +19,6 @@ class User(UserBase):
 
 
 class Property(BaseModel):
+    id: int
     address: str
     mortgage_applicaton_date: datetime

@@ -126,7 +126,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-#async def login_for_access_token(username:str, password: str, db: Session = Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
@@ -139,6 +138,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@app.post("/properties/", response_model=schemas.Property)
+def create_property(property: schemas.Property, db: Session = Depends(get_db)):
+    property = crud.get_property_by_address(db, address=property.address)
+    if property:
+        raise HTTPException(status_code=400, detail="Property already registered")
+    return crud.create_property(db=db, property=property)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

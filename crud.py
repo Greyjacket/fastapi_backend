@@ -6,7 +6,6 @@ import models, schemas
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
-
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
@@ -24,12 +23,22 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-
 def delete_user(db: Session, user_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     db.delete(user)
     db.commit()
     return user
+
+def create_property(db: Session, property: schemas.Property):
+    property = models.Property(address=property.address, mortgage_application_date=property.mortgage_applicaton_date)
+    db.add(property)
+    db.commit()
+    db.refresh(property)
+    return property
+
+def get_property_by_address(db: Session, address: str):
+    return db.query(models.Property).filter(models.Property.address == address).first()
+
 
 
 # def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
