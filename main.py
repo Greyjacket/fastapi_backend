@@ -141,8 +141,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 @app.post("/properties/", response_model=schemas.Property)
 def create_property(property: schemas.Property, db: Session = Depends(get_db)):
-    property = crud.get_property_by_address(db, address=property.address)
-    if property:
+    property_exists = crud.get_property_by_address(db, address=property.address)
+    if property_exists:
         raise HTTPException(status_code=400, detail="Property already registered")
     return crud.create_property(db=db, property=property)
 
