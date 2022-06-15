@@ -146,5 +146,10 @@ def create_property(property: schemas.Property, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Property already registered")
     return crud.create_property(db=db, property=property)
 
+@app.get("/properties/", response_model=list[schemas.Property])
+def read_properties(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
+    properties = crud.get_properties(db, skip=skip, limit=limit)
+    return properties
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

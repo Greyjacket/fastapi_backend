@@ -22,3 +22,6 @@ class Property(BaseModel):
     id: int
     address: str
     mortgage_applicaton_date: datetime
+    
+    class Config:
+        orm_mode = True

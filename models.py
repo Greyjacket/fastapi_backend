@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -18,4 +18,4 @@ class Property(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     address = Column(String, unique=True, index=True)
-    mortgage_applicaton_date = Column(Date)
+    mortgage_applicaton_date = Column(DateTime)
