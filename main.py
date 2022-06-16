@@ -151,5 +151,21 @@ def read_properties(skip: int = 0, limit: int = 20, db: Session = Depends(get_db
     properties = crud.get_properties(db, skip=skip, limit=limit)
     return properties
 
+
+@app.get("/properties/{property_id}", response_model=schemas.Property)
+def read_property(property_id: int, db: Session = Depends(get_db)):
+    property = crud.get_user(db, property_id=property_id)
+    if property is None:
+        raise HTTPException(status_code=404, detail="Property not found")
+    return property
+
+@app.delete("/properties/{property_id}", response_model=schemas.Property)
+def delete_property(property_id: int, db: Session = Depends(get_db)):
+    property = crud.delete_property(db, property_id=property_id)
+    if property is None:
+        raise HTTPException(status_code=404, detail="Property not found")
+    return property
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
