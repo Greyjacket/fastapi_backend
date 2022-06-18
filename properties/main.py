@@ -1,6 +1,6 @@
 from . import crud, schemas
 from fastapi import Depends, APIRouter, HTTPException
-from ..dependencies import Session, get_db
+from dependencies import get_db
 
 
 router = APIRouter(

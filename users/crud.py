@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
-import models, schemas
+from . import models, schemas
 
 
 def get_user(db: Session, user_id: int):

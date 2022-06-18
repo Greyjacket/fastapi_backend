@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 from werkzeug.security import check_password_hash
 from jose import JWTError, jwt
-from .dependencies import get_current_user,Session,get_db, oauth2_scheme, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from dependencies import get_db, oauth2_scheme, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 router = APIRouter(
     prefix="/users",

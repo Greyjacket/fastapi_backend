@@ -1,4 +1,4 @@
-from .database import SessionLocal
+from database import SessionLocal
 from fastapi.security import OAuth2PasswordBearer
 
 
