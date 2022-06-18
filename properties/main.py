@@ -1,6 +1,6 @@
-import crud, schemas
+from . import crud, schemas
 from fastapi import Depends, APIRouter, HTTPException
-from sqlalchemy.orm import Session
+from ..dependencies import Session, get_db
 
 
 router = APIRouter(
