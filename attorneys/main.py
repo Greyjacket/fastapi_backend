@@ -18,19 +18,19 @@ def create_attorney(attorney: schemas.Attorney, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[schemas.Attorney])
 def read_attorneys(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
-    attornies = crud.get_attorneys(db, skip=skip, limit=limit)
-    return attornies
+    attorneys = crud.get_attorneys(db, skip=skip, limit=limit)
+    return attorneys
 
 
 @router.get("/{attorney_name}", response_model=schemas.Attorney)
-def read_attorney(attorney_id: int, db: Session = Depends(get_db)):
-    attorney = crud.get_user(db, attorney_id=attorney_id)
+def read_attorney(name: str, db: Session = Depends(get_db)):
+    attorney = crud.get_attorney_by_name(db, name=name)
     if attorney is None:
         raise HTTPException(status_code=404, detail="Attorney not found")
     return attorney
 
 
-@router.delete("/{attorney_name}", response_model=schemas.Attorney)
+@router.delete("/{attorney_id}", response_model=schemas.Attorney)
 def delete_attorney(attorney_id: int, db: Session = Depends(get_db)):
     attorney = crud.delete_attorney(db, attorney_id=attorney_id)
     if attorney is None:

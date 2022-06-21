@@ -22,9 +22,9 @@ def read_properties(skip: int = 0, limit: int = 20, db: Session = Depends(get_db
     return properties
 
 
-@router.get("/{property_id}", response_model=schemas.Property)
-def read_property(property_id: int, db: Session = Depends(get_db)):
-    property = crud.get_user(db, property_id=property_id)
+@router.get("/{address}", response_model=schemas.Property)
+def read_property(address: str, db: Session = Depends(get_db)):
+    property = crud.get_property_by_address(db, address=address)
     if property is None:
         raise HTTPException(status_code=404, detail="Property not found")
     return property
@@ -32,7 +32,9 @@ def read_property(property_id: int, db: Session = Depends(get_db)):
 
 @router.delete("/{property_id}", response_model=schemas.Property)
 def delete_property(property_id: int, db: Session = Depends(get_db)):
-    property = crud.delete_property(db, property_id=property_id)
-    if property is None:
+    property_exists = crud.get_property_by_id(db, id=property_id)
+    if property_exists:
+        property = crud.delete_property(db, property_id=property_id)
+    else:
         raise HTTPException(status_code=404, detail="Property not found")
     return property

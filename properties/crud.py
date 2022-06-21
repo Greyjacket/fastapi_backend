@@ -12,6 +12,9 @@ def create_property(db: Session, property: schemas.Property):
 def get_property_by_address(db: Session, address: str):
     return db.query(models.Property).filter(models.Property.address == address).first()
 
+def get_property_by_id(db: Session, id: int):
+    return db.query(models.Property).filter(models.Property.id == id).first()
+
 def get_properties(db: Session, skip: int = 0, limit: int = 20):
     return db.query(models.Property).offset(skip).limit(limit).all()
 
