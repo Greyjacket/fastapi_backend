@@ -1,25 +1,9 @@
 from pydantic import BaseModel
 
-class UserBase(BaseModel):
-    username: str | None
-    email: str
 
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
+class Contract(BaseModel):
     id: int
-    is_active: bool
+    attorney: int
 
     class Config:
         orm_mode = True
-
-
-class TokenData(BaseModel):
-    email: str | None = None
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
