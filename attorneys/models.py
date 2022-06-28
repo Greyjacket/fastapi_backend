@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 #from contracts import models
@@ -10,4 +10,5 @@ class Attorney(Base):
     name = Column(String, unique=True, index=True)
     phone = Column(String, unique=True)
     #contract_id = Column(Integer, ForeignKey())
-    contract = relationship("Contract")
+    #contracts = relationship("Contract", back_populates="attorney")
+    contracts = relationship("Contract", backref="contracts")

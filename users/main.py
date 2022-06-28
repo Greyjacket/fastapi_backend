@@ -13,7 +13,7 @@ router = APIRouter(
     prefix="/users",
 )
 
-@router.post("/",  response_model=schemas.User)
+@router.post("/",  response_model=schemas.User, tags=["Users"])
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
@@ -21,13 +21,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@router.get("/", response_model=list[schemas.User])
+@router.get("/", response_model=list[schemas.User], tags=["Users"])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
 
-@router.get("/{user_id}", response_model=schemas.User)
+@router.get("/{user_id}", response_model=schemas.User, tags=["Users"])
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
@@ -35,7 +35,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.delete("/{user_id}", response_model=schemas.User)
+@router.delete("/{user_id}", response_model=schemas.User, tags=["Users"])
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.delete_user(db, user_id=user_id)
     if db_user is None:
@@ -76,7 +76,7 @@ async def get_current_active_user(current_user: models.User = Depends(get_curren
     return current_user
 
     
-@router.get("/users/me")
+@router.get("/users/me", tags=["Users"])
 async def read_users_me(current_user: models.User = Depends(get_current_active_user)):
     return current_user
 
@@ -92,7 +92,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-@router.post("/token", response_model=schemas.Token)
+@router.post("/token", response_model=schemas.Token, tags=["Users"])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:

@@ -8,7 +8,7 @@ router = APIRouter(
     prefix="/agents",
 )
 
-@router.post("/", response_model=schemas.Agent)
+@router.post("/", response_model=schemas.Agent, tags=["Agents"])
 def create_agent(agent: schemas.Agent, db: Session = Depends(get_db)):
     agent_exists = crud.get_agent_by_name(db, name=agent.name)
     if agent_exists:
@@ -16,13 +16,13 @@ def create_agent(agent: schemas.Agent, db: Session = Depends(get_db)):
     return crud.create_agent(db=db, agent=agent)
 
 
-@router.get("/", response_model=list[schemas.Agent])
+@router.get("/", response_model=list[schemas.Agent], tags=["Agents"])
 def read_agents(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     agents = crud.get_agents(db, skip=skip, limit=limit)
     return agents
 
 
-@router.get("/{agent_name}", response_model=schemas.Agent)
+@router.get("/{agent_name}", response_model=schemas.Agent, tags=["Agents"])
 def read_agent(name: str, db: Session = Depends(get_db)):
     agent = crud.get_agent_by_name(db, name=name)
     if agent is None:
@@ -30,7 +30,7 @@ def read_agent(name: str, db: Session = Depends(get_db)):
     return agent
 
 
-@router.delete("/{agent_id}", response_model=schemas.Agent)
+@router.delete("/{agent_id}", response_model=schemas.Agent, tags=["Agents"])
 def delete_agent(agent_id: int, db: Session = Depends(get_db)):
     agent = crud.delete_agent(db, agent_id=agent_id)
     if agent is None:

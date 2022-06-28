@@ -8,7 +8,7 @@ router = APIRouter(
     prefix="/attorneys",
 )
 
-@router.post("/", response_model=schemas.Attorney)
+@router.post("/", response_model=schemas.Attorney, tags=["Attorneys"])
 def create_attorney(attorney: schemas.Attorney, db: Session = Depends(get_db)):
     attorney_exists = crud.get_attorney_by_name(db, name=attorney.name)
     if attorney_exists:
@@ -16,13 +16,13 @@ def create_attorney(attorney: schemas.Attorney, db: Session = Depends(get_db)):
     return crud.create_attorney(db=db, attorney=attorney)
 
 
-@router.get("/", response_model=list[schemas.Attorney])
+@router.get("/", response_model=list[schemas.Attorney], tags=["Attorneys"])
 def read_attorneys(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     attorneys = crud.get_attorneys(db, skip=skip, limit=limit)
     return attorneys
 
 
-@router.get("/{attorney_name}", response_model=schemas.Attorney)
+@router.get("/{attorney_name}", response_model=schemas.Attorney, tags=["Attorneys"])
 def read_attorney(name: str, db: Session = Depends(get_db)):
     attorney = crud.get_attorney_by_name(db, name=name)
     if attorney is None:
@@ -30,7 +30,7 @@ def read_attorney(name: str, db: Session = Depends(get_db)):
     return attorney
 
 
-@router.delete("/{attorney_id}", response_model=schemas.Attorney)
+@router.delete("/{attorney_id}", response_model=schemas.Attorney, tags=["Attorneys"])
 def delete_attorney(attorney_id: int, db: Session = Depends(get_db)):
     attorney = crud.delete_attorney(db, attorney_id=attorney_id)
     if attorney is None:

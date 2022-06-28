@@ -1,8 +1,7 @@
-from sqlalchemy import ForeignKey, Column, Integer, String
+from sqlalchemy import ForeignKey, Column, Integer, DateTime
 from sqlalchemy.orm import relationship
-#from attorneys.models import Attorney
 from database import Base
-#from ..attorneys.models import Attorney
+
 
 class Contract(Base):
     __tablename__ = "contracts"
@@ -10,6 +9,9 @@ class Contract(Base):
     id = Column(Integer, primary_key=True, index=True)
     #attorney = relationship(Attorney)
     attorney_id = Column(Integer, ForeignKey("attorneys.id"))
+    mortgage_applicaton_date = Column(DateTime)
+
+    #attorney = relationship("Attorney", back_populates="attorney")
     # username = Column(String, unique=True, index=True)
     # email = Column(String)
     # password = Column(String)
