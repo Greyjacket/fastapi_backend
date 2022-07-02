@@ -15,7 +15,14 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from database import Base
-target_metadata = Base.metadata
+from contracts.models import Contract
+from attorneys.models import Attorney
+from users.models import User
+from agents.models import Agent
+from properties.models import Property
+from clients.models import Client
+
+target_metadata = [Base.metadata]
 #target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
