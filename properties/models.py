@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -12,3 +12,4 @@ class Property(Base):
     city = Column(String)
     state = Column(String)
     zip = Column(String)
+    contracts = relationship("Contract", backref="property_contracts")

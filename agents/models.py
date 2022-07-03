@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from database import Base
+from sqlalchemy.orm import relationship
 
 
 class Agent(Base):
@@ -9,3 +10,4 @@ class Agent(Base):
     name = Column(String, unique=True, index=True)
     phone = Column(String, unique=True)
     organization = Column(String)
+    contracts = relationship("Contract", backref="agent_contracts")

@@ -1,11 +1,11 @@
-import datetime
 from pydantic import BaseModel
+from contracts import schemas
 
 
 class Property(BaseModel):
     id: int
     address: str
-    mortgage_applicaton_date: datetime.date
-    
+    contracts: list[schemas.Contract] = []
+
     class Config:
         orm_mode = True
