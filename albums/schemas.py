@@ -26,15 +26,13 @@ class Album(BaseModel):
     class Config:
         orm_mode = True
 
+
 class Artist(BaseModel):
     id: int
     name: str
-    format: str
-    total_tracks: int
-    release_date: datetime = None
-    purchase_data: datetime = None
     date_added: datetime
-    track: list[Track] = []
+    tracks: list[Track] = []
+    albums: list[Album] = []
 
     class Config:
         orm_mode = True

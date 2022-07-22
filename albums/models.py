@@ -9,7 +9,8 @@ class Track(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     track_number = Column(Integer)
-    agents_id = Column(Integer, ForeignKey("albums.id"))
+    artist_id = Column(Integer, ForeignKey("artist.id"))
+    album_id = Column(Integer, ForeignKey("albums.id"))
 
 class Album(Base):
     __tablename__ = "albums"
@@ -22,4 +23,18 @@ class Album(Base):
     release_date: Column(DateTime)
     purchase_data: Column(DateTime)
     date_added: Column(DateTime)
+    artist_id = Column(Integer, ForeignKey("artist.id"))
     tracks = relationship("Track", backref="track_album")
+
+class Artist(Base):
+    __tablename__ = "artists"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    format: Column(String)
+    date_added: Column(DateTime)
+    tracks = relationship("Track", backref="artist_tracks")
+    albums = relationship("Album", backref="artist_albums")
+
+    class Config:
+        orm_mode = True
