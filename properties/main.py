@@ -35,6 +35,6 @@ def delete_property(property_id: int, db: Session = Depends(get_db)):
     property_exists = crud.get_property_by_id(db, id=property_id)
     if property_exists:
         property = crud.delete_property(db, property_id=property_id)
+        return property
     else:
         raise HTTPException(status_code=404, detail="Property not found")
-    return property
