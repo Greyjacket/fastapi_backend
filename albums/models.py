@@ -12,6 +12,9 @@ class Track(Base):
     artist_id = Column(Integer, ForeignKey("artist.id"))
     album_id = Column(Integer, ForeignKey("albums.id"))
 
+    class Config:
+        orm_mode = True
+        
 class Album(Base):
     __tablename__ = "albums"
 
@@ -25,6 +28,9 @@ class Album(Base):
     date_added: Column(DateTime)
     artist_id = Column(Integer, ForeignKey("artist.id"))
     tracks = relationship("Track", backref="track_album")
+
+    class Config:
+        orm_mode = True
 
 class Artist(Base):
     __tablename__ = "artists"

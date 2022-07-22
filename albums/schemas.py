@@ -30,7 +30,7 @@ class Album(BaseModel):
 class Artist(BaseModel):
     id: int
     name: str
-    date_added: datetime
+    date_added: datetime = None
     tracks: list[Track] = []
     albums: list[Album] = []
 
