@@ -10,13 +10,13 @@ router = APIRouter(
 
 @router.post("/albums", response_model=schemas.Album, tags=["Albums"])
 def create_album(album: schemas.Album, db: Session = Depends(get_db)):
-    album_exists = crud.get_album_by_full_name(db, full_name=album.full_name)
+    album_exists = crud.get_album_by_title(db, title=album.title)
     if album_exists:
         raise HTTPException(status_code=400, detail="Album already registered")
     return crud.create_album(db=db, album=album)
 
 
-@router.put("/{album_id}", response_model=schemas.Album,  tags=["Albums"])
+@router.put("/albums/{album_id}", response_model=schemas.Album,  tags=["Albums"])
 def update_album(album_id: str, album: schemas.Album, db: Session = Depends(get_db)):
     album_exists = crud.get_album_by_id(db, id=album_id)
     if not album_exists:
@@ -30,15 +30,15 @@ def read_albums(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return albums
 
 
-@router.get("/{album_name}", response_model=schemas.Album, tags=["Albums"])
-def read_album(full_name: str, db: Session = Depends(get_db)):
-    album = crud.get_album_by_full_name(db, full_name=full_name)
+@router.get("/albums/{album_name}", response_model=schemas.Album, tags=["Albums"])
+def read_album(title: str, db: Session = Depends(get_db)):
+    album = crud.get_album_by_title(db, title=title)
     if album is None:
         raise HTTPException(status_code=404, detail="Album not found")
     return album
 
 
-@router.delete("/{album_id}", response_model=schemas.Album, tags=["Albums"])
+@router.delete("/albums/{album_id}", response_model=schemas.Album, tags=["Albums"])
 def delete_album(album_id: int, db: Session = Depends(get_db)):
     album_exists = crud.get_album_by_id(db, id=album_id)
     if album_exists:
@@ -50,13 +50,13 @@ def delete_album(album_id: int, db: Session = Depends(get_db)):
 
 @router.post("/artists", response_model=schemas.Artist, tags=["Artists"])
 def create_artist(artist: schemas.Artist, db: Session = Depends(get_db)):
-    artist_exists = crud.get_artist_by_full_name(db, full_name=artist.full_name)
+    artist_exists = crud.get_artist_by_full_name(db, name=artist.name)
     if artist_exists:
         raise HTTPException(status_code=400, detail="Artist already registered")
     return crud.create_artist(db=db, artist=artist)
 
 
-@router.put("/{artist_id}", response_model=schemas.Artist,  tags=["Artists"])
+@router.put("/artists/{artist_id}", response_model=schemas.Artist,  tags=["Artists"])
 def update_artist(artist_id: str, artist: schemas.Artist, db: Session = Depends(get_db)):
     artist_exists = crud.get_artist_by_id(db, id=artist_id)
     if not artist_exists:
@@ -70,15 +70,15 @@ def read_artists(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return artists
 
 
-@router.get("/{artist_name}", response_model=schemas.Artist, tags=["Artists"])
-def read_artist(full_name: str, db: Session = Depends(get_db)):
-    artist = crud.get_artist_by_full_name(db, full_name=full_name)
+@router.get("/artists/{artist_name}", response_model=schemas.Artist, tags=["Artists"])
+def read_artist(name: str, db: Session = Depends(get_db)):
+    artist = crud.get_artist_by_full_name(db, name=name)
     if artist is None:
         raise HTTPException(status_code=404, detail="Artist not found")
     return artist
 
 
-@router.delete("/{artist_id}", response_model=schemas.Artist, tags=["Artists"])
+@router.delete("/artists/{artist_id}", response_model=schemas.Artist, tags=["Artists"])
 def delete_artist(artist_id: int, db: Session = Depends(get_db)):
     artist_exists = crud.get_artist_by_id(db, id=artist_id)
     if artist_exists:
@@ -90,13 +90,13 @@ def delete_artist(artist_id: int, db: Session = Depends(get_db)):
 
 @router.post("/tracks", response_model=schemas.Track, tags=["Tracks"])
 def create_track(track: schemas.Track, db: Session = Depends(get_db)):
-    track_exists = crud.get_track_by_full_name(db, full_name=track.full_name)
+    track_exists = crud.get_track_by_title(db, title=track.title)
     if track_exists:
         raise HTTPException(status_code=400, detail="Track already registered")
     return crud.create_track(db=db, track=track)
 
 
-@router.put("/{track_id}", response_model=schemas.Track,  tags=["Tracks"])
+@router.put("/tracks/{track_id}", response_model=schemas.Track,  tags=["Tracks"])
 def update_track(track_id: str, track: schemas.Track, db: Session = Depends(get_db)):
     track_exists = crud.get_track_by_id(db, id=track_id)
     if not track_exists:
@@ -110,15 +110,15 @@ def read_tracks(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return tracks
 
 
-@router.get("/{track_name}", response_model=schemas.Track, tags=["Tracks"])
-def read_track(full_name: str, db: Session = Depends(get_db)):
-    track = crud.get_track_by_full_name(db, full_name=full_name)
+@router.get("/tracks/{track_name}", response_model=schemas.Track, tags=["Tracks"])
+def read_track(title: str, db: Session = Depends(get_db)):
+    track = crud.get_track_by_title(db, title=title)
     if track is None:
         raise HTTPException(status_code=404, detail="Track not found")
     return track
 
 
-@router.delete("/{track_id}", response_model=schemas.Track, tags=["Tracks"])
+@router.delete("/tracks/{track_id}", response_model=schemas.Track, tags=["Tracks"])
 def delete_track(track_id: int, db: Session = Depends(get_db)):
     track_exists = crud.get_track_by_id(db, id=track_id)
     if track_exists:

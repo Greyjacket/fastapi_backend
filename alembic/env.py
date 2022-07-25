@@ -21,6 +21,9 @@ from users.models import User
 from agents.models import Agent
 from properties.models import Property
 from clients.models import Client
+from albums.models import Artist
+from albums.models import Album
+from albums.models import Track
 
 target_metadata = [Base.metadata]
 #target_metadata = None
